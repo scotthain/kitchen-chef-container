@@ -18,6 +18,8 @@
 
 require 'kitchen'
 require 'kitchen/driver/docker'
+require 'net/ssh'
+require 'kitchen/monkey_patches/ssh'
 
 module Kitchen
 
@@ -27,40 +29,14 @@ module Kitchen
     #
     # @author Scott Hain <shain@getchef.com>
     class ChefContainer < Kitchen::Driver::Docker
-      default_config :init_command, "/opt/chef/embedded/bin/runsvdir-start -P /opt/chef/service"
-
-      # def create(state)
-      #   super
-      #   path = "/opt/chef/bin:/opt/chef/embedded/bin:/usr/local/bin:/usr/local/sbin:/bin:/sbin:/usr/bin:/usr/sbin"
-      #   command = "sh -c 'PATH=#{path} #{config[:init_command]}'"
-
-      #   old_run = config[:run_command]
-      #   config[:run_command] = command
-      #   run_command = build_run_command(state[:image_id])
-      #   puts "OMMANNDD" + run_command
-      #   output = docker_command(run_command)
-      #   puts "RETURN: " + output
-      #   config[:run_command] = old_run
-
-      # end
+      default_config :init_command, "/opt/chef/embedded/bin/runsvdir -P /opt/chef/service"
 
       def converge(state)
         path = "/opt/chef/bin:/opt/chef/embedded/bin:/usr/local/bin:/usr/local/sbin:/bin:/sbin:/usr/bin:/usr/sbin"
-#        command = "sudo nohup env PATH=#{path} #{config[:init_command]} & > /tmp/blargs"
 
-        # don't make this a single command - in order to make the command actually run,
-        # you actually have to dump it to a script. silly ruby.
-        stupid_script_string = <<-STUPID.gsub(/^ {10}/, '')
-          #!/bin/sh -xe
-          export PATH=#{path}:$PATH
-          nohup sudo -E #{config[:init_command]} < /dev/null > /dev/null 2>&1 &
-        STUPID
-
-          # my_command = "sudo -E /bin/sh -c 'nohup sudo -E #{config[:init_command]}< /dev/null > /dev/null 2>&1 &'"
-        Kitchen::SSH.new(*build_ssh_args(state)) do |conn|
-          run_remote("sudo echo '#{stupid_script_string}' > /tmp/hacky_runit_start.sh", conn)
-          run_remote("chmod 755 /tmp/hacky_runit_start.sh", conn)
-          run_remote("sudo -E /tmp/hacky_runit_start.sh", conn)
+        # this command requires no PTY, so that it can continue to run runit after the shell dies.
+        Kitchen::NoPTYSSH.new(*build_ssh_args(state)) do |conn|
+          run_remote("sudo -E PATH=#{path}:$PATH nohup #{config[:init_command]} < /dev/null > /dev/null 2>&1 &", conn)
         end
 
         super
