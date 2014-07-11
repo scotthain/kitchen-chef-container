@@ -4,12 +4,12 @@ A Test Kitchen Driver for Using Chef-Container on Docker.
 
 ## Requirements
 
-* [Kitchen-Docker][(https://github.com/portertech/kitchen-docker)]
-* [Chef-Container][(http://docs.opscode.com/containers.html)]
+* [Kitchen-Docker](https://github.com/portertech/kitchen-docker)
+* [Chef-Container](http://docs.opscode.com/containers.html)
 
 ## Installation and Setup
 
-Please read the Test Kitchen [docs][test_kitchen_docs] for more details.
+Please read the Test Kitchen [docs](http://kitchen.ci/) for more details.
 
 Example `.kitchen.local.yml`:
 
@@ -39,7 +39,7 @@ This driver can currently supports only the Docker Chef/Ubuntu 12.04 image.
 
 ## Configuration
 
-See [Kitchen-Docker][(https://github.com/portertech/kitchen-docker)] for base configuration options
+See [Kitchen-Docker](https://github.com/portertech/kitchen-docker) for base configuration options
 
 ## Contributing
 Please read [CONTRIBUTING.md](CONTRIBUTING.md)
