@@ -30,7 +30,7 @@ platforms:
       - recipe[apt::default]
     driver_config:
       require_chef_omnibus: false
-      image: chef/ubuntu_12.04
+      image: chef/ubuntu-12.04
       socket: tcp://192.168.59.100:2375
 ```
 
