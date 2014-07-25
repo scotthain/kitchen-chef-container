@@ -2,7 +2,7 @@
 #
 # Author:: Scott Hain (<shain@getchef.com>)
 #
-# Copyright (C) 2014, Scott Hain
+# Copyright (C) 2014, Chef Software Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

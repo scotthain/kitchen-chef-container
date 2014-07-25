@@ -12,7 +12,13 @@ A Test Kitchen Driver for Using Chef-Container on Docker.
 
 Please read the Test Kitchen [docs](http://kitchen.ci/) for more details.
 
-Example `.kitchen.local.yml`:
+The simplest way to install kitchen-chef-container is to add it as a git dependency in your Gemfile as such:
+
+```ruby
+gem 'kitchen-chef-container', :git => 'https://github.com/scotthain/kitchen-chef-container.git'
+```
+
+Then, modify your .kitchen.yml or .kitchen.local.yml similar to this:
 
 ```
 ---
@@ -62,7 +68,7 @@ Full License: [here](LICENSE)
 kitchen-chef-container - a driver for chef-container
 
 Author:: Scott Hain (<shain@getchef.com>)  
-Copyright:: Copyright (c) 2012-2014 Chef Software, Inc.  
+Copyright:: Copyright (C) 2014, Chef Software Inc
 License:: Apache License, Version 2.0
 
 Licensed under the Apache License, Version 2.0 (the "License");
